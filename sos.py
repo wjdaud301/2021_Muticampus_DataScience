@@ -1,1 +1,4 @@
-print('sos error')
+print('master')
+
+def fire():
+    print('Friday')
