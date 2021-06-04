@@ -113,5 +113,8 @@ $ git commit -m 'add .gitignore'
 
  master branch 시점을 멈추고 생성한 branch의 시점으로 이동
 
+<<<<<<< HEAD
 branch는 master가 되는 것이 종착지
 
+=======
+>>>>>>> 실험
