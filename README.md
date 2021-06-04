@@ -7,6 +7,7 @@ $git commit -m 'message'	# repository로 이동
 $git status			# git 상태확인
 $git log			# commit상태에 대해 log확인
 $git restore			# add한 후 다시 working directory로 복구
+
 ```
 
    
@@ -101,4 +102,16 @@ $ git init
 $ git add. 
 $ git commit -m 'add .gitignore'
 ```
+
+
+
+## master 와 branch
+
+`$git checkout `  /  `$git switch` : 내 위치를 이동하는 명령어 (head를 옮긴다)
+
+`$git branch 'branch 이름'` : branch를 생성
+
+ master branch 시점을 멈추고 생성한 branch의 시점으로 이동
+
+branch는 master가 되는 것이 종착지
 
