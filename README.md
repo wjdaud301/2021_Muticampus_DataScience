@@ -1,12 +1,12 @@
 ## git의 간단한 명령어 모음
 
 ```
-$git init                   # working directory
-$git add<file/dir>          # staging area로 이동
-$git commit -m 'message'    # repository로 이동
-$git status					# git 상태확인
-$git log					# commit상태에 대해 log확인
-$git restore				# add한 후 다시 working directory로 복구
+$git init			# working directory
+$git add<file/dir>		# staging area로 이동
+$git commit -m 'message'	# repository로 이동
+$git status			# git 상태확인
+$git log			# commit상태에 대해 log확인
+$git restore			# add한 후 다시 working directory로 복구
 ```
 
    
@@ -75,33 +75,30 @@ $git restore				# add한 후 다시 working directory로 복구
 
 - #### git과 pycharm을 연동하여 관리하기 (불필요한 파일 없애기)
 
-
-
 1. 프로젝트 폴더(디렉토리)를 만든다.
 
 2. `.gitignore`와 `README.md`파일을 생성한다.
-
-   * **`.gitignore` 파일은 .git의 파일 관리에서 무시할 내용을, `README.md` 는  프로젝트의 소개 및 정리 내용을 담는다. **
+   * **`.gitignore` 파일은 .git의 파일 관리에서 무시할 내용을, `README.md` 는  프로젝트의 소개 및 정리 내용을 담는다. **   
+   * gitignore.io 이용
+     - 자신의 프로젝트에 맞는 .gitignore파일을 만든다 (소스코드 복붙)
 
 3. `$ git init`을 한다.
 
-   ```
-   $ touch README.md .gitignore && git init
-   
-   * 실제로 프로젝트에 파일을 Staging area 올리고 commit하기
-   $ git add. 
-   $ git commit -m 'add .gitignore'
-   ```
-
-   
 
 4. **주의**
 
-   * **`.git/`폴더와 `.gitignore`파일과 `README.md`파일이 같은 위치에 존재하는가!!**
+* **`.git/`폴더와 `.gitignore`파일과 `README.md`파일이 같은 위치에 존재하는가 확인한다!!**
 
 5. 첫번째 커밋을 한다!
 
+---
 
+```
+$ touch README.md .gitignore  
+$ git init
 
-* gitignore.io
-  - 자신의 프로젝트에 맞는 .gitignore파일을 만든다 (소스코드 복붙)
+* 실제로 프로젝트에 파일을 Staging area 올리고 commit하기
+$ git add. 
+$ git commit -m 'add .gitignore'
+```
+
