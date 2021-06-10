@@ -1,9 +1,9 @@
 <img width="821" alt="2" src="https://user-images.githubusercontent.com/72295363/121493191-8ab0d980-ca12-11eb-9617-684f5dcb5c9f.PNG">
 
 <img width="703" alt="1" src="https://user-images.githubusercontent.com/72295363/121493183-88e71600-ca12-11eb-900f-6b84d5568c44.PNG">
-
+   
 ---
-
+   
 
 
 
@@ -138,7 +138,7 @@ print(x_data)
 '''
 ```
 
-참고) fit_transform() 함수 사용
+참고) fit_transform() 함수 사용   
 
 ```python
 x_data = transformer.fit_transform(x_data)
