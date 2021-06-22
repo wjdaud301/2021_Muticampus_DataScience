@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "C:\\anaconda\\envs\\django\\python.exe",
+    "terminal.integrated.shell.windows":"C:\\windows\\System32\\cmd.exe",
+    "terminal.integrated.shellArgs.windows":["/k","C:\\anaconda\\Scripts\\activate.bat C:\\anaconda"]
+}
