@@ -3,16 +3,16 @@ import numpy as np
 import os
 
 
-for n in range(9,13):
+for n in range(11,13):
     if n < 10: n = '0'+str(n)
     else: n = str(n)
 
     # 월의 몇일이 있는지 알기 위해서 excel파일의 개수를 센다
-    path = f'.\LOCAL_PEOPLE_2020{n}' 
+    path = f'.\LOCAL_PEOPLE_2018{n}' 
     file_list = os.listdir(path) 
 
     # 월의 1일을 불러온다
-    df = pd.read_csv(f'./LOCAL_PEOPLE_2020{n}/LOCAL_PEOPLE_2020{n}01.csv',encoding='cp949') #
+    df = pd.read_csv(f'./LOCAL_PEOPLE_2018{n}/LOCAL_PEOPLE_2018{n}01.csv')#,encoding='cp949') #
     df.rename(columns={'?"기준일ID"':'기준일ID'},inplace=True) # 오타 처리
 
     code = pd.read_csv('행정동코드.csv',index_col=0) 
@@ -55,7 +55,7 @@ for n in range(9,13):
             if i < 10: i = '0'+str(i)
             else: i = str(i)
                 
-            df = pd.read_csv(f'./LOCAL_PEOPLE_2020{n}/LOCAL_PEOPLE_2020{n}{i}.csv',encoding='cp949') #
+            df = pd.read_csv(f'./LOCAL_PEOPLE_2018{n}/LOCAL_PEOPLE_2018{n}{i}.csv')#,encoding='cp949') #
             df.rename(columns={'?"기준일ID"':'기준일ID'},inplace=True)
 
             df2 = pd.merge(df.iloc[:,:5],code.iloc[:,1:], on='행정동코드',how ='left')
@@ -78,7 +78,7 @@ for n in range(9,13):
 
             df2.drop_duplicates(inplace=True)
             tmp = (df1['총생활인구수'].values + df2['총생활인구수'].values)//2
-            print(f"LOCAL_PEOPLE_2020{n}{i}.csv를 완료했습니다.") #
+            print(f"LOCAL_PEOPLE_2018{n}{i}.csv를 완료했습니다.") #
 
         except (FileNotFoundError,ValueError) as e:
             print('error : ',e)
@@ -87,8 +87,8 @@ for n in range(9,13):
         
     # 평균값을 계산하여 최종적으로 총생활인구수에 삽입하고 저장한다.
     df1['총생활인구수'] = tmp
-    df1.to_csv(f'LOCAL_PEOPLE_2020{n}.csv')
-    print(f'LOCAL_PEOPLE_2020{n}.csv 생성')
+    df1.to_csv(f'LOCAL_PEOPLE_2018{n}.csv')
+    print(f'LOCAL_PEOPLE_2018{n}.csv 생성')
 
 
 ########## 여러개의 month를 year 통합시키기 ##########
@@ -96,7 +96,7 @@ month = []
 for i in range(1,13):
     if i < 10: i = '0'+str(i)
     else: str(i)
-    df = pd.read_csv(f'LOCAL_PEOPLE_2020{i}.csv')
+    df = pd.read_csv(f'LOCAL_PEOPLE_2018{i}.csv')
     month.append(df)
 result = pd.concat(month)
 result.to_csv('LOCAL_PEOPLE_2020.csv',index=False)
