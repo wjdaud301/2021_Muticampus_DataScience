@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home.apps.HomeConfig',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
-    # 'channels',
-    # 'channels_redis',
+    'channels',
+    'channels_redis',
 ]
 
 MIDDLEWARE = [
@@ -91,7 +91,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '1234',
         'HOST': 'localhost',
-        'PORT':'3306',
+        # 'PORT':'3306',
     }
 }
 
@@ -131,16 +131,16 @@ USE_TZ = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# ASGI_APPLICATION = 'Dash.routing.application'
+ASGI_APPLICATION = 'Dash.routing.application'
 
-# CHANNEL_LAYERS={
-#     'default':{
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             'hosts':[('127.0.0.1',6379),],
-#         }
-#     }
-# }
+CHANNEL_LAYERS={
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts':[('127.0.0.1',6379),],
+        }
+    }
+}
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -169,4 +169,3 @@ STATICFILES_DIRS= [
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

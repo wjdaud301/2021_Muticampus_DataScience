@@ -26,4 +26,4 @@ def home(requests):
         'plot1' : scatter()
     }
 
-    return render(requests, 'home/welcome.html',context)
+    return render(requests, 'home/welcome.html', context)

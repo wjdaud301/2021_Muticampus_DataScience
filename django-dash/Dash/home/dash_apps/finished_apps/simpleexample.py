@@ -1,5 +1,4 @@
 import dash_core_components as dcc
-from dash_core_components.Graph import Graph
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
@@ -10,7 +9,7 @@ app = DjangoDash('SimpleExample',external_stylesheets=external_stylesheets)   # 
 
 app.layout = html.Div([
   html.H1('Square Root Slider Graph'),
-  dcc.Graph(id='slider-graph',animate=True,style={"backgroundColor":"#1a2d46", "color":"#ffffff"}),
+  dcc.Graph(id='slider-graph', animate=True, style={"backgroundColor":"#1a2d46", "color":"#ffffff"}),
   dcc.Slider(
       id = 'slider-updatemode',
       marks = {i: '{}'.format(i) for i in range(20)},
@@ -20,21 +19,23 @@ app.layout = html.Div([
       updatemode = 'drag',
 
   ),
-
 ])
 
 @app.callback(
     Output('slider-graph', 'figure'),
     [Input('slider-updatemode', 'value')])
+
+
 def display_value(value):
     x = []
     for i in range(value):
-        x.append()
+        x.append(i)
+
     y = []
     for i in range(value):
-        y.append()
+        y.append(i*i)
 
-    graph = go.scatter(
+    graph = go.Scatter(
         x=x,
         y=y,
         name = 'Manipulate Graph'
