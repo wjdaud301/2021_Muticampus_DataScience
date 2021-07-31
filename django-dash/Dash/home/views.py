@@ -23,7 +23,7 @@ def home(requests):
         return plot_div
 
     context = {
-        'plot1' : scatter()
+        'plot1' :  scatter()
+        
     }
-
     return render(requests, 'home/welcome.html', context)
