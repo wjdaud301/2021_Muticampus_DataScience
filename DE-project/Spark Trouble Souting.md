@@ -136,6 +136,199 @@ only showing top 20 rows
 
 
 
+
+
+---
+
+
+
+
+
+### 데이터 수집 과정 중 이슈
+
+---
+
+
+
+2019년 1월 1일 부터 현재에서 3일 전까지 날짜를 카운트 하기 위해 pd.date_range 를 통해 불러오기
+
+```python
+from datetime import datetime
+
+today = datetime.today() - timedelta(3)
+today_3 = today.strftime("%Y%m%d")
+start = '20190101'
+
+def date_range(start, end):
+    start = datetime.strptime(start, "%Y%m%d")
+    end = datetime.strptime(end, "%Y%m%d")
+    dates = [date.strftime("%Y%m%d") for date in pd.date_range(start, periods=(end-start).days+1)]
+    return dates
+    
+dates = date_range(start, today_3)
+print(dates)
+
+['20190101', '20190102', '20190103', '20190104', '20190105', '20190106', '20190107', '20190108', '20190109' ......'20210727', '20210728', '20210729', '20210730', '20210731', '20210801', '20210802', '20210803', '20210804', '20210805', '20210806', '20210807']
+```
+
+
+
+
+
+
+
+---
+
+
+
+
+
+### PySpark와 MySQL 연결과정 이슈
+
+---
+
+
+
+- 스파크가 MySQL과 커넥션을 하기 위한 JDBC Connector를 다운
+  1. https://dev.mysql.com/downloads/connector/j/  tar.gz 파일을 저장
+  2. `tar -zxvf [파일명.tar.gz]` 으로 압축풀기
+  3. `$SPARK_HOME/jars/` 디렉토리에 mysql-connector-java-8.0.17.jar 파일 저장
+  4.  pyspark에서 Session 연결
+
+
+
+문제 : 
+
+기본적으로 초기설정되어 있는 mysql의 root계정의 패스워드 타입 때문에 이와 같은 에러가 발생
+
+```
+'ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+```
+
+
+
+해결책:
+
+1.
+
+```mysql
+$ sudo mysql -u root # 터미널에서 sudo를 사용하여 root계정으로 mysql에 접속한다. 
+
+
+mysql> select User, Host, plugin from mysql.user;
+
++------------------+-----------+----------------------------------------+
+
+| User                            | Host      | plugin                                          |
+
++------------------+-----------+-----------------------------------------+
+
+| root                             | localhost | auth_socket                       |
+
+| mysql.session                    | localhost | mysql_native_password |
+
+| mysql.sys                        | localhost | mysql_native_password |
+
+| debian-sys-maint                 | localhost | mysql_native_password |
+
++------------------+-----------+----------------------------------------+
+```
+
+
+
+2. mysql_native_password로 변경해 준 다음 비밀 번호를 설정하면 접속이 가능해 진다.
+
+```mysql
+mysql> update user set plugin='mysql_native_password' where user='root';
+
+mysql> flush privileges; # mysql user table을 변경 후 꼭 해주어야 적용이 된다
+
+mysql> select User, Host, plugin from mysql.user;
+
++------------------+-----------+----------------------------------------+
+
+| User                            | Host      | plugin                                          |
+
++------------------+-----------+-----------------------------------------+
+
+| root                             | localhost | mysql_native_password |
+
+| mysql.session        | localhost | mysql_native_password |
+
+| mysql.sys                 | localhost | mysql_native_password |
+
+| debian-sys-maint | localhost | mysql_native_password |
+
++------------------+-----------+----------------------------------------+
+```
+
+
+
+3. 위와 같이 plugin이 변경된 것을 확인 한 후 비밀번호를 설정한다.
+
+```mysql
+mysql>SET PASSWORD FOR 'root'@'localhost' = PASSWORD('변경할 비밀번호');
+
+
+
+mysql> flush privileges; # mysql user table을 변경 후 꼭 해주어야 적용이 된다
+```
+
+
+
+다시 우분투 터미널로 가서 접속을 시도하면 정상적으로 접속되는 걸 확인 할 수 있다
+
+참고 :  https://jcon.tistory.com/130 (mysql root 계정 접속 문제)
+
+
+
+
+
+---
+
+
+
+
+
+### JDBC Connector를 통해 다른 database에 DataFrame 삽입하기
+
+
+
+1. Spark를 통해  MySQL 읽어오기
+
+   ```python
+   jdbcDF = spark.read \
+       .format("jdbc") \
+       .option("url", "jdbc:mysql:dbserver") \
+       .option("driver", "com.mysql.jdbc.Driver") \
+       .option("dbtable", "schema.tablename") \
+       .option("user", "username") \
+       .option("password", "password") \
+       .load()
+   ```
+
+
+
+2. Spark를 통해 MySQL 저장하기
+
+   ```python
+   jdbcDF.write \
+       .format("jdbc") \
+       .option("url", "jdbc:mysql:dbserver") \
+       .option("dbtable", "schema.tablename") \
+       .option("user", "username") \
+       .option("password", "password") \
+       .save()
+   ```
+
+   
+
+참고 : https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html (spark JDBC)
+
+
+
+
+
 pyspark example: https://sparkbyexamples.com/pyspark/pyspark-read-json-file-into-dataframe/
 
 https://www.mongodb.com/blog/post/getting-started-with-mongodb-pyspark-and-jupyter-notebook
