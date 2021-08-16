@@ -66,6 +66,7 @@ subwaySchema =  StructType([
   ])
 
 # spark.sql로 현재 날짜를 추출해서 WORK_DT 컬럼 DROP
+df = spark.read.schema(subwaySchema).format("com.mongodb.spark.sql.DefaultSource").load() 
 df.createOrReplaceTempView("df2021")
 df2021 = spark.sql("SELECT * FROM df2021 WHERE USE_DT = {}".format(today_4))
 df2021 = df2021.drop('WORK_DT')
