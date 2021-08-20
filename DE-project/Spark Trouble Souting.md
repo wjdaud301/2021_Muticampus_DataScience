@@ -321,7 +321,80 @@ mysql> flush privileges; # mysql user table을 변경 후 꼭 해주어야 적�
        .save()
    ```
 
-   
+
+
+
+
+
+
+
+
+
+## PandasDataFrame To SparkDataFrame 
+
+
+
+큰 데이터를 만지다보면 Spark의 DataFrame과 Pandas의 DataFrame의 서로 변환이 꼭 필수이다.
+
+Pandas의 DataFrame을 Spark SQL의 테이블로 등록하고, Spark에서 작업을 하기도 한다.
+
+
+
+- Pandas의 DataFrame을 Spark의 DataFrame으로 변환하기 위해서는 
+
+  `spark.createDataFrame(df)`를 하면된다.
+
+
+
+- spark의 DataFrame을 Pandas의 DataFrame으로 변환하기 위해서는
+
+  `df.toPandas()` 를 하면된다.
+
+
+
+
+
+
+
+----
+
+
+
+ ## MySQL Workbench에서 문제
+
+
+
+mysql에서 특정한 sql을 실행을 하는데 아래와 같은 에러가 리턴된다.
+
+```
+Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.
+```
+
+
+
+#### 에러원인
+
+테이블에서 키값을 이용한 update나 delete만을 허용하도록 되어 있는데, 그렇지 않게 좀 더 넓은 범위의
+
+sql을 적용하려고 할 때 workbench에서 경고를 주는 것임
+
+즉 하나의 레코드만을 update, delete하도록 설정되어 있는데, 다수의 레코드를 update나 delete 하는
+
+sql명령어가 실행되기 때문에 발생한다.
+
+
+
+#### 해결방법 (1)
+
+아래와 같은 sql로 환경변수를 변경해준다. (일시적인 Safe모드 해제)
+set sql_safe_updates=0;
+
+
+
+#### 해결방법 (2)
+
+Workbench Preferences에서 안전모드(Safe mode)를 해제한다.
+아래의 그림에 있는 부분에서 체크를 해제한후에 다시 workbench를 시작한다.
 
 참고 : https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html (spark JDBC)
 
